@@ -24,6 +24,7 @@ export default function LoginForm() {
       email,
       password,
       redirect: false, // Handle redirect manually
+      remember, // Add this to handle the "remember me" functionality
     });
 
     console.log("Sign-in response:", res);
