@@ -1,3 +1,6 @@
+<img width="1426" alt="Screenshot 2025-02-07 at 12 13 46" src="https://github.com/user-attachments/assets/aea7ac83-416d-43a6-b16f-0ec80c061fea" />
+
+
 ## Frontend Application Test
 
 Frontend Application Test is a web application that allows users to login in using an [API](https://app.axis.africa/api/user/login). The application is built using Next.js, a popular React framework, and Tailwind CSS for styling. 
