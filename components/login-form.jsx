@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -20,31 +20,21 @@ export default function LoginForm() {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const response = await axios.post("https://app.axis.africa/api/user/login", {
-        email,
-        password,
-      });
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false, // Handle redirect manually
+    });
 
-      console.log("API Response:", response.data);
+    console.log("Sign-in response:", res);
 
-      if (response.data.error) {
-        setError(response.data.error === "Invalid credentials" ? "Invalid email or password" : response.data.error);
-        setIsLoading(false);
-      } else {
-        // Store token and ensure it's saved before navigating
-        await localStorage.setItem("token", response.data.access_token);
-
-        console.log("Stored Token:", localStorage.getItem("token"));
-
-        // Redirect to the callback URL
-        router.push(callbackUrl);
-        router.refresh(); // Optional: ensures page reload
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Unauthorized access, please contact the admin");
+    if (res?.error) {
+      setError("Invalid email or password");
       setIsLoading(false);
+    } else {
+      // Redirect to the callback URL after successful login
+      router.push(callbackUrl);
+      router.refresh(); // Optional: ensures session updates
     }
   };
 

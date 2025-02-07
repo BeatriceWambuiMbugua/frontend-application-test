@@ -1,48 +1,44 @@
-import NextAuth from "next-auth/next";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error("please provide process.env.NEXTAUTH_SECRET environment variable");
-}
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        // username: { label: "Username", type: "text", placeholder: "John Doe" },
         email: { label: "Email", type: "email", placeholder: "Enter your Email" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (
-          // credentials.username === "john.wanyoike" &&
-          credentials.email === "john.wanyoike@belvadigital.com" &&
-          credentials.password === "12345678"
-        ) {
-          return { email: credentials.email};
-        } else {
+        try {
+          const res = await fetch("https://app.axis.africa/api/user/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: credentials.email, password: credentials.password }),
+          });
+
+          if (!res.ok) throw new Error("Invalid credentials");
+
+          const user = await res.json();
+          return user.access_token ? { email: user.email, token: user.access_token } : null;
+        } catch (error) {
+          console.error("Auth error:", error);
           return null;
         }
       },
     }),
   ],
-  // callbacks: {
-  //   async session({ session, token }) {
-  //     console.log("Session", session)
-  //     session.user.name = token.name;
-  //     return session;
-  //   },
-  //   async jwt({ token, user }) {
-  //     if (user) {
-  //       token.name = user.name;
-  //     }
-  //     return token;
-  //   },
-  // },
-  session: {
-    strategy: "jwt",
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.accessToken = user.token;
+      return token;
+    },
+    async session({ session, token }) {
+      session.accessToken = token.accessToken;
+      return session;
+    },
   },
+  session: { strategy: "jwt" },
 });
 
 export { handler as GET, handler as POST };
