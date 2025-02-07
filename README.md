@@ -1,4 +1,5 @@
-<img width="1426" alt="Screenshot 2025-02-07 at 12 12 26" src="https://github.com/user-attachments/assets/3aee0fc3-6ceb-4a03-9c14-e10daae29af7" />
+<img width="1426" alt="Screenshot 2025-02-07 at 12 13 46" src="https://github.com/user-attachments/assets/aea7ac83-416d-43a6-b16f-0ec80c061fea" />
+
 
 ## Frontend Application Test
 
