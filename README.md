@@ -133,4 +133,4 @@ module.exports = {
 ```
 ### Contributing
 
-Contributions are welcome. Please make sure to update tests as appropriate.
+Contributions are welcome. 
