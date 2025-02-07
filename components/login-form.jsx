@@ -33,6 +33,10 @@ export default function LoginForm() {
         // Store the token in localStorage
         localStorage.setItem("token", response.data.access_token);
 
+        // Verify that the token is stored
+        const storedToken = localStorage.getItem("token");
+        console.log("Stored Token:", storedToken);
+
         // Redirect to the home page upon successful login
         router.push(callbackUrl);
       }
